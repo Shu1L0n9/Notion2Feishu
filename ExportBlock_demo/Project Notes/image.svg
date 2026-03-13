@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="600" viewBox="0 0 900 600">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#4f46e5"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="600" fill="url(#g)"/>
+  <circle cx="150" cy="120" r="60" fill="#ffffff22"/>
+  <circle cx="760" cy="500" r="90" fill="#ffffff22"/>
+  <text x="60" y="280" font-size="64" fill="white" font-family="Segoe UI, Arial, sans-serif" font-weight="700">notion2feishu DEMO</text>
+  <text x="62" y="340" font-size="30" fill="white" font-family="Segoe UI, Arial, sans-serif">image / attachment / child-doc / markdown styles</text>
+</svg>

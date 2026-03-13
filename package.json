@@ -1,0 +1,34 @@
+{
+  "name": "notion2feishu",
+  "version": "1.0.0",
+  "description": "Migrate data from Notion to Feishu",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "migrate": "node src/migrate.js",
+    "migrate-docs": "node src/migrate-docs.js",
+    "export": "node src/export.js",
+    "import-feishu": "node src/import-feishu.js",
+    "dev": "node --watch src/index.js",
+    "test": "jest"
+  },
+  "keywords": [
+    "notion",
+    "feishu",
+    "migration"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@notionhq/client": "^2.2.14",
+    "axios": "^1.6.2",
+    "csv-parse": "^5.5.2",
+    "csv-stringify": "^6.4.6",
+    "dotenv": "^16.3.1",
+    "image-size": "^2.0.2"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
