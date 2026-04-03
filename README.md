@@ -42,19 +42,19 @@
 ### 步骤 3: 获取用户 Access Token 和 个人知识库 ID
 
 1. 在应用设置中找到 **Redirect URL**，添加回调地址（例如 `http://localhost:3000/callback`）
-2. 浏览器打开以下 URL，登录并同意授权（把 `APP_ID` 和 `REDIRECT_URI` 替换成你自己的；`REDIRECT_URI` 需要先做 URL 编码，例如 `http://localhost:3000/callback` 编码后是 `http%3A%2F%2Flocalhost%3A3000%2Fcallback`）：
+2. 先生成一个随机 `state`（用于防止 CSRF），再打开以下 URL，登录并同意授权（把 `APP_ID`、`REDIRECT_URI`、`STATE` 替换成你自己的；`REDIRECT_URI` 需要先做 URL 编码，例如 `http://localhost:3000/callback` 编码后是 `http%3A%2F%2Flocalhost%3A3000%2Fcallback`）：
 
 ```text
-https://open.feishu.cn/open-apis/authen/v1/index?app_id=APP_ID&redirect_uri=REDIRECT_URI&state=notion2feishu
+https://open.feishu.cn/open-apis/authen/v1/index?app_id=APP_ID&redirect_uri=REDIRECT_URI&state=STATE
 ```
 
 3. 授权成功后会跳转到你的回调地址，URL 上会带 `code` 参数，例如：
 
 ```text
-http://localhost:3000/callback?code=xxx&state=notion2feishu
+http://localhost:3000/callback?code=xxx&state=STATE
 ```
 
-其中 `code=xxx` 就是“授权代码”。
+其中 `code=xxx` 就是“授权代码”，并且要确认回调里的 `state` 与你发起授权时使用的 `STATE` 一致。
 
 4. 用这个 `code` 换取用户 Access Token（2 小时过期）：
 
@@ -69,7 +69,7 @@ curl -X POST 'https://open.feishu.cn/open-apis/authen/v1/access_token' \
     "app_id": "'"$FEISHU_APP_ID"'",
     "app_secret": "'"$FEISHU_APP_SECRET"'",
     "grant_type": "authorization_code",
-    "code": "上一步拿到的code"
+    "code": "your_authorization_code_here"
   }'
 ```
 
