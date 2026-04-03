@@ -42,13 +42,16 @@
 ### 步骤 3: 获取用户 Access Token 和 个人知识库 ID
 
 1. 在应用设置中找到 **Redirect URL**，添加回调地址（例如 `http://localhost:3000/callback`）
-2. 先生成一个随机 `state`（用于防止 CSRF），再打开以下 URL，登录并同意授权（把 `APP_ID`、`REDIRECT_URI`、`STATE` 替换成你自己的；`REDIRECT_URI` 需要先做 URL 编码，例如 `http://localhost:3000/callback` 编码后是 `http%3A%2F%2Flocalhost%3A3000%2Fcallback`）：
+2. 先生成一个随机 `state`（用于防止 CSRF）。
+3. 将 `APP_ID`、`REDIRECT_URI`、`STATE` 替换成你自己的值后，打开授权 URL 完成登录和授权。
+   - `REDIRECT_URI` 需要先做 URL 编码。
+   - 例如 `http://localhost:3000/callback` 编码后是 `http%3A%2F%2Flocalhost%3A3000%2Fcallback`。
 
 ```text
 https://open.feishu.cn/open-apis/authen/v1/index?app_id=APP_ID&redirect_uri=REDIRECT_URI&state=STATE
 ```
 
-3. 授权成功后会跳转到你的回调地址，URL 上会带 `code` 参数，例如：
+4. 授权成功后会跳转到你的回调地址，URL 上会带 `code` 参数，例如：
 
 ```text
 http://localhost:3000/callback?code=xxx&state=STATE
@@ -56,7 +59,7 @@ http://localhost:3000/callback?code=xxx&state=STATE
 
 其中 `code=xxx` 就是“授权代码”，并且要确认回调里的 `state` 与你发起授权时使用的 `STATE` 一致。
 
-4. 用这个 `code` 换取用户 Access Token（2 小时过期）：
+5. 用这个 `code` 换取用户 Access Token（2 小时过期）：
 
 ```bash
 # 建议先在当前终端设置环境变量，避免把 APP_SECRET 明文写进命令历史
@@ -75,7 +78,7 @@ curl -X POST 'https://open.feishu.cn/open-apis/authen/v1/access_token' \
 
 返回结果中的 `data.access_token` 就是 `FEISHU_USER_ACCESS_TOKEN`。
 
-5. 获取个人知识库（Wiki Space）的 ID，作为迁移目标，并将信息填入 `.env`：
+6. 获取个人知识库（Wiki Space）的 ID，作为迁移目标，并将信息填入 `.env`：
 
 ```env
 FEISHU_USER_ACCESS_TOKEN=你的data.access_token
