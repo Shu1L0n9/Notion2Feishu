@@ -202,10 +202,9 @@ async function migrateAsDocxNested(client, absInput, context, parentToken) {
 async function main() {
   const appId = process.env.FEISHU_APP_ID;
   const appSecret = process.env.FEISHU_APP_SECRET;
-  const userAccessToken = process.env.FEISHU_USER_ACCESS_TOKEN || '';
 
-  if (!userAccessToken && (!appId || !appSecret)) {
-    console.error('❌ 缺少凭证：请提供 FEISHU_USER_ACCESS_TOKEN 或 FEISHU_APP_ID + FEISHU_APP_SECRET');
+  if (!appId || !appSecret) {
+    console.error('❌ 缺少凭证：请提供 FEISHU_APP_ID + FEISHU_APP_SECRET');
     process.exit(1);
   }
 
@@ -226,9 +225,7 @@ async function main() {
     process.exit(1);
   }
 
-  const client = new FeishuDocClient(appId, appSecret, {
-    userAccessToken,
-  });
+  const client = new FeishuDocClient(appId, appSecret);
   const parentToken = process.env.FEISHU_PARENT_FOLDER_TOKEN || '';
 
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');

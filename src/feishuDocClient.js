@@ -4,10 +4,9 @@ import path from 'path';
 import { imageSize } from 'image-size';
 
 class FeishuDocClient {
-  constructor(appId, appSecret, options = {}) {
+  constructor(appId, appSecret) {
     this.appId = appId;
     this.appSecret = appSecret;
-    this.userAccessToken = options.userAccessToken || '';
     this.accessToken = null;
     this.tokenExpireTime = 0;
     this.baseURL = 'https://open.feishu.cn/open-apis';
@@ -26,10 +25,6 @@ class FeishuDocClient {
   }
 
   async getAccessToken() {
-    if (this.userAccessToken) {
-      return this.userAccessToken;
-    }
-
     const now = Date.now();
     if (this.accessToken && now < this.tokenExpireTime) {
       return this.accessToken;

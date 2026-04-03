@@ -15,7 +15,7 @@
 - ✅ 自动上传图片并保留正确的宽高比
 - ✅ 支持文件附件上传
 - ✅ 子文档引用（自动解析为链接）
-- ✅ User Access Token 认证（OAuth 支持）
+- ✅ App ID + App Secret 自动获取/刷新 token（无需手动 OAuth）
 
 ## 快速开始
 
@@ -39,25 +39,16 @@
 4. 填写应用名称、描述等信息
 5. 获取 **App ID** 和 **App Secret**
 
-### 步骤 3: 配置凭证和个人知识库 ID（推荐应用凭证）
+### 步骤 3: 配置凭证和个人知识库 ID
 
-本项目支持两种鉴权方式：
+配置 `FEISHU_APP_ID` + `FEISHU_APP_SECRET`，程序会自动调用
+`/auth/v3/tenant_access_token/internal` 获取并刷新 token，无需手动 OAuth。
 
-1. **推荐：应用凭证（无需手动 OAuth）**  
-   只配置 `FEISHU_APP_ID` + `FEISHU_APP_SECRET`，程序会自动调用
-   `/auth/v3/tenant_access_token/internal` 获取并刷新 token。
-2. **可选：用户 Access Token（OAuth）**  
-   仅当你明确需要用户态权限时，再走“授权码 -> Access Token”流程，并填写 `FEISHU_USER_ACCESS_TOKEN`。
-3. 获取个人知识库（Wiki Space）的 ID，作为迁移目标
-4. 将上述信息填入 `.env` 文件（示例）：
+获取个人知识库（Wiki Space）的 ID，作为迁移目标，将上述信息填入 `.env` 文件（示例）：
 
 ```bash
-# 推荐方式（无需手动拿授权码）
 FEISHU_APP_ID=cli_xxx
 FEISHU_APP_SECRET=xxx
-
-# 可选：如果已通过 OAuth 拿到用户 token，可填写覆盖应用 token
-# FEISHU_USER_ACCESS_TOKEN=u-xxx
 
 FEISHU_WIKI_SPACE_ID=7561127450958023410
 ```
@@ -134,9 +125,6 @@ A: 如果样式未显示，可能是因为：
 
 ### Q: 如何只迁移特定文件夹？
 A: 在运行迁移前，将想要迁移的文件夹复制出来，然后指定该目录路径。
-
-### Q: 既然 App ID + App Secret 就能拿 token，为什么还要我手动拿授权码？
-A: 默认不需要手动拿授权码。直接配置 `FEISHU_APP_ID` 和 `FEISHU_APP_SECRET` 即可运行。README 中的 OAuth 方式是可选方案，仅在你需要用户态权限时使用。
 
 ## License
 
