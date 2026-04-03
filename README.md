@@ -48,10 +48,10 @@
    - 例如 `http://localhost:3000/callback` 编码后是 `http%3A%2F%2Flocalhost%3A3000%2Fcallback`。
 
 ```text
-https://open.feishu.cn/open-apis/authen/v1/index?app_id=APP_ID&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fcallback&state=STATE
+https://open.feishu.cn/open-apis/authen/v1/index?app_id=APP_ID&redirect_uri=REDIRECT_URI&state=STATE
 ```
 
-上面是 `localhost` 示例，请替换为你自己的已编码回调地址。
+其中 `REDIRECT_URI` 需要填写“已编码后的回调地址”（例如 `http%3A%2F%2Flocalhost%3A3000%2Fcallback`）。
 
 4. 授权成功后会跳转到你的回调地址，URL 上会带 `code` 参数，例如：
 
@@ -75,7 +75,7 @@ curl -X POST 'https://open.feishu.cn/open-apis/authen/v1/access_token' \
     "app_id": "'"$FEISHU_APP_ID"'",
     "app_secret": "'"$FEISHU_APP_SECRET"'",
     "grant_type": "authorization_code",
-    "code": "YOUR_AUTHORIZATION_CODE"
+    "code": "回调URL中的code参数值（例如xxx）"
   }'
 ```
 
