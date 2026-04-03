@@ -42,10 +42,39 @@
 ### 步骤 3: 获取用户 Access Token 和 个人知识库 ID
 
 1. 在应用设置中找到 **Redirect URL**，添加回调地址（例如 `http://localhost:3000/callback`）
-2. 使用 Feishu OAuth 端点获取授权代码
-3. 用授权代码交换 Access Token（此token会在2小时后过期）
-4. 获取个人知识库（Wiki Space）的 ID，作为迁移目标
-5. 将上述信息填入 `.env` 文件：
+2. 浏览器打开以下 URL，登录并同意授权（把 `APP_ID` 和 `REDIRECT_URI` 替换成你自己的）：
+
+```text
+https://open.feishu.cn/open-apis/authen/v1/index?app_id=APP_ID&redirect_uri=REDIRECT_URI&state=notion2feishu
+```
+
+3. 授权成功后会跳转到你的回调地址，URL 上会带 `code` 参数，例如：
+
+```text
+http://localhost:3000/callback?code=xxx&state=notion2feishu
+```
+
+其中 `code=xxx` 就是“授权代码”。
+
+4. 用这个 `code` 换取用户 Access Token（2 小时过期）：
+
+```bash
+curl -X POST 'https://open.feishu.cn/open-apis/authen/v1/access_token' \
+  -H 'Content-Type: application/json; charset=utf-8' \
+  -d '{
+    "grant_type": "authorization_code",
+    "code": "上一步拿到的code"
+  }'
+```
+
+返回结果中的 `data.access_token` 就是 `FEISHU_USER_ACCESS_TOKEN`。
+
+5. 获取个人知识库（Wiki Space）的 ID，作为迁移目标，并将信息填入 `.env`：
+
+```env
+FEISHU_USER_ACCESS_TOKEN=你的data.access_token
+FEISHU_WIKI_SPACE_ID=你的个人知识库space_id
+```
 
 ### 步骤 4: 安装依赖
 
