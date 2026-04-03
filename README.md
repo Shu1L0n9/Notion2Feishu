@@ -63,6 +63,7 @@ http://localhost:3000/callback?code=xxx&state=STATE
 
 ```bash
 # 建议先在当前终端设置环境变量，避免把 APP_SECRET 明文写进命令历史
+# 注意：请把下面示例值替换成你自己的真实 App 凭证
 export FEISHU_APP_ID='你的APP_ID'
 export FEISHU_APP_SECRET='你的APP_SECRET'
 
@@ -72,7 +73,7 @@ curl -X POST 'https://open.feishu.cn/open-apis/authen/v1/access_token' \
     "app_id": "'"$FEISHU_APP_ID"'",
     "app_secret": "'"$FEISHU_APP_SECRET"'",
     "grant_type": "authorization_code",
-    "code": "your_authorization_code_here"
+    "code": "你的授权代码"
   }'
 ```
 
