@@ -62,6 +62,8 @@ http://localhost:3000/callback?code=xxx&state=notion2feishu
 curl -X POST 'https://open.feishu.cn/open-apis/authen/v1/access_token' \
   -H 'Content-Type: application/json; charset=utf-8' \
   -d '{
+    "app_id": "你的APP_ID",
+    "app_secret": "你的APP_SECRET",
     "grant_type": "authorization_code",
     "code": "上一步拿到的code"
   }'
