@@ -42,7 +42,7 @@
 ### 步骤 3: 获取用户 Access Token 和 个人知识库 ID
 
 1. 在应用设置中找到 **Redirect URL**，添加回调地址（例如 `http://localhost:3000/callback`）
-2. 浏览器打开以下 URL，登录并同意授权（把 `APP_ID` 和 `REDIRECT_URI` 替换成你自己的）：
+2. 浏览器打开以下 URL，登录并同意授权（把 `APP_ID` 和 `REDIRECT_URI` 替换成你自己的；`REDIRECT_URI` 需要先做 URL 编码，例如 `http://localhost:3000/callback` 编码后是 `http%3A%2F%2Flocalhost%3A3000%2Fcallback`）：
 
 ```text
 https://open.feishu.cn/open-apis/authen/v1/index?app_id=APP_ID&redirect_uri=REDIRECT_URI&state=notion2feishu
@@ -59,11 +59,15 @@ http://localhost:3000/callback?code=xxx&state=notion2feishu
 4. 用这个 `code` 换取用户 Access Token（2 小时过期）：
 
 ```bash
+# 建议先在当前终端设置环境变量，避免把 APP_SECRET 明文写进命令历史
+export FEISHU_APP_ID='你的APP_ID'
+export FEISHU_APP_SECRET='你的APP_SECRET'
+
 curl -X POST 'https://open.feishu.cn/open-apis/authen/v1/access_token' \
   -H 'Content-Type: application/json; charset=utf-8' \
   -d '{
-    "app_id": "你的APP_ID",
-    "app_secret": "你的APP_SECRET",
+    "app_id": "'"$FEISHU_APP_ID"'",
+    "app_secret": "'"$FEISHU_APP_SECRET"'",
     "grant_type": "authorization_code",
     "code": "上一步拿到的code"
   }'
