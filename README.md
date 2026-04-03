@@ -71,11 +71,12 @@ export FEISHU_APP_SECRET='你的APP_SECRET'
 
 curl -X POST 'https://open.feishu.cn/open-apis/authen/v1/access_token' \
   -H 'Content-Type: application/json; charset=utf-8' \
+  # 这里的 $FEISHU_APP_ID / $FEISHU_APP_SECRET 会在此 JSON 字符串中展开
   -d '{
     "app_id": "'"$FEISHU_APP_ID"'",
     "app_secret": "'"$FEISHU_APP_SECRET"'",
     "grant_type": "authorization_code",
-    "code": "YOUR_CODE_FROM_CALLBACK"
+    "code": "xxx_from_callback"
   }'
 ```
 
