@@ -56,10 +56,10 @@ https://open.feishu.cn/open-apis/authen/v1/index?app_id={APP_ID}&redirect_uri={R
 4. 授权成功后会跳转到你的回调地址，URL 上会带 `code` 参数，例如：
 
 ```text
-http://localhost:3000/callback?code=xxx&state=STATE
+http://localhost:3000/callback?code=xxx&state=your_random_state
 ```
 
-其中 `code=xxx` 就是“授权代码”，并且要确认回调里的 `state` 与你发起授权时使用的 `STATE` 一致。
+其中 `code=xxx` 就是“授权代码”，并且要确认回调里的 `state` 与你发起授权时使用的 `your_random_state` 一致。
 
 5. 用这个 `code` 换取用户 Access Token（2 小时过期）：
 
@@ -69,7 +69,7 @@ http://localhost:3000/callback?code=xxx&state=STATE
 export FEISHU_APP_ID='你的APP_ID'
 export FEISHU_APP_SECRET='你的APP_SECRET'
 
-# 这里的 $FEISHU_APP_ID / $FEISHU_APP_SECRET 会在 JSON 字符串中展开
+# 这里的 $FEISHU_APP_ID / $FEISHU_APP_SECRET 会先由 shell 展开，再传给 curl
 curl -X POST 'https://open.feishu.cn/open-apis/authen/v1/access_token' \
   -H 'Content-Type: application/json; charset=utf-8' \
   -d '{
