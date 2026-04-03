@@ -51,6 +51,8 @@
 https://open.feishu.cn/open-apis/authen/v1/index?app_id=APP_ID&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fcallback&state=STATE
 ```
 
+上面是 `localhost` 示例，请替换为你自己的已编码回调地址。
+
 4. 授权成功后会跳转到你的回调地址，URL 上会带 `code` 参数，例如：
 
 ```text
@@ -73,7 +75,7 @@ curl -X POST 'https://open.feishu.cn/open-apis/authen/v1/access_token' \
     "app_id": "'"$FEISHU_APP_ID"'",
     "app_secret": "'"$FEISHU_APP_SECRET"'",
     "grant_type": "authorization_code",
-    "code": "xxx"
+    "code": "YOUR_AUTHORIZATION_CODE"
   }'
 ```
 
