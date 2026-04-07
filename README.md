@@ -15,7 +15,7 @@
 - ✅ 自动上传图片并保留正确的宽高比
 - ✅ 支持文件附件上传
 - ✅ 子文档引用（自动解析为链接）
-- ✅ User Access Token 认证（OAuth 支持）
+- ✅ App ID + App Secret 自动获取/刷新 token（无需手动 OAuth）
 
 ## 快速开始
 
@@ -39,13 +39,19 @@
 4. 填写应用名称、描述等信息
 5. 获取 **App ID** 和 **App Secret**
 
-### 步骤 3: 获取用户 Access Token 和 个人知识库 ID
+### 步骤 3: 配置凭证和个人知识库 ID
 
-1. 在应用设置中找到 **Redirect URL**，添加回调地址（例如 `http://localhost:3000/callback`）
-2. 使用 Feishu OAuth 端点获取授权代码
-3. 用授权代码交换 Access Token（此token会在2小时后过期）
-4. 获取个人知识库（Wiki Space）的 ID，作为迁移目标
-5. 将上述信息填入 `.env` 文件：
+配置 `FEISHU_APP_ID` + `FEISHU_APP_SECRET`，程序会自动调用
+`/auth/v3/tenant_access_token/internal` 获取并刷新 token，无需手动 OAuth。
+
+获取个人知识库（Wiki Space）的 ID，作为迁移目标，将上述信息填入 `.env` 文件（示例）：
+
+```bash
+FEISHU_APP_ID=cli_xxx
+FEISHU_APP_SECRET=xxx
+
+FEISHU_WIKI_SPACE_ID=7561127450958023410
+```
 
 ### 步骤 4: 安装依赖
 
