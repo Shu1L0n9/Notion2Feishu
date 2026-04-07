@@ -41,19 +41,34 @@
 
 ### 步骤 3: 获取用户 Access Token 和 个人知识库 ID
 
-1. 在应用设置中找到 **Redirect URL**，添加回调地址（例如 `http://localhost:3000/callback`）
-2. 使用 Feishu OAuth 端点获取授权代码
-3. 用授权代码交换 Access Token（此token会在2小时后过期）
-4. 获取个人知识库（Wiki Space）的 ID，作为迁移目标
-5. 将上述信息填入 `.env` 文件：
-
-### 步骤 4: 安装依赖
-
+1. 在应用设置中找到 **Redirect URL**，添加回调地址（例如 `http://localhost:91/callback`）
+2. 在开发者后台申请并发布需要的权限（用户身份权限！！！）：
+  - `wiki:wiki`、`wiki:node:create`
+  - `docx:document:write`
+  - `drive:media:write`
+3. 将 App ID / App Secret 和个人知识库（Wiki Space）的 ID，写入 `.env` 的对应字段，示例：
+   
 ```bash
-npm install
+FEISHU_APP_ID=cli_xxx
+FEISHU_APP_SECRET=xxx
+FEISHU_WIKI_SPACE_ID=1234567890
 ```
 
-### 步骤 5: 迁移文档到飞书
+**如何获取 Wiki Space ID：**
+   - 打开飞书云文档的“知识库”主页
+   - 创建新的要导入的知识库，然后点击知识库设置
+   - 复制浏览器地址栏里的链接，形如：
+      `https://my.feishu.cn/wiki/settings/7625876636073331649`
+   - `settings/` 后面的数字就是 `FEISHU_WIKI_SPACE_ID`
+
+4. 运行获取 token 脚本（会自动打开授权页并把 token 写回 `.env`）
+   
+```bash
+npm install
+npm run get_feishu_token
+```
+
+### 步骤 4: 迁移文档到飞书
 
 ```bash
 npm run migrate-docs ./ExportBlock
@@ -68,7 +83,8 @@ npm run migrate-docs ./ExportBlock
 **可选参数：**
 ```bash
 # 只迁移前 N 个文档（用于测试）
-npm run migrate-docs ./ExportBlock --limit=5
+npm run migrate-docs -- ./ExportBlock --limit=5
+
 
 # 启用详细日志
 DEBUG=true npm run migrate-docs ./ExportBlock
@@ -83,7 +99,9 @@ DEBUG=true npm run migrate-docs ./ExportBlock
 
 | 命令 | 说明 |
 | --- | --- |
+| `npm run get_feishu_token` | 打开浏览器授权并写入 `FEISHU_USER_ACCESS_TOKEN` |
 | `npm run migrate-docs <dir>` | 迁移 Notion 导出目录到飞书云文档库 |
+| `npm run probe-docx` | 写入测试文档内容（验证 token 权限） |
 | `npm run dev` | 开发模式（监听文件变化） |
 
 ## 项目结构

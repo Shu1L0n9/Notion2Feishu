@@ -4,24 +4,34 @@ import axios from 'axios';
 dotenv.config();
 
 const baseURL = 'https://open.feishu.cn/open-apis';
+const userAccessToken = process.env.FEISHU_USER_ACCESS_TOKEN || '';
+const testDocId = process.env.FEISHU_TEST_DOC_ID || process.env.FEISHU_DOC_ID || '';
+const testText = process.env.FEISHU_TEST_TEXT || `Probe write at ${new Date().toISOString()}`;
 
 async function getToken() {
+  if (userAccessToken) {
+    return userAccessToken;
+  }
+
   const res = await axios.post(`${baseURL}/auth/v3/tenant_access_token/internal`, {
     app_id: process.env.FEISHU_APP_ID,
     app_secret: process.env.FEISHU_APP_SECRET,
   });
+
+  if (res.data.code !== 0) {
+    throw new Error(`Failed to get tenant_access_token: ${res.data.msg || 'unknown error'}`);
+  }
+
   return res.data.tenant_access_token;
 }
 
-async function main() {
-  const token = await getToken();
-  const headers = { Authorization: `Bearer ${token}` };
-
+async function createProbeDocument(headers) {
   const folder = await axios.post(
     `${baseURL}/drive/v1/files/create_folder`,
     { name: `Probe_${Date.now()}`, folder_token: '' },
     { headers },
   );
+
   const folderToken = folder.data.data.token;
 
   const doc = await axios.post(
@@ -29,9 +39,39 @@ async function main() {
     { title: 'ProbeDoc', folder_token: folderToken },
     { headers },
   );
-  const documentId = doc.data.data.document.document_id;
 
+  return {
+    folderToken,
+    documentId: doc.data.data.document.document_id,
+  };
+}
+
+async function appendProbeText(documentId, headers) {
   const endpoint = `${baseURL}/docx/v1/documents/${documentId}/blocks/${documentId}/children`;
+  const payload = {
+    children: [
+      {
+        block_type: 2,
+        text: {
+          elements: [
+            {
+              type: 1,
+              text_run: { content: testText },
+            },
+          ],
+        },
+      },
+    ],
+  };
+
+  return axios.post(endpoint, payload, { headers });
+}
+
+async function main() {
+  const token = await getToken();
+  const headers = { Authorization: `Bearer ${token}` };
+
+  const documentId = testDocId || (await createProbeDocument(headers)).documentId;
 
   const payloads = [
     {
@@ -94,6 +134,12 @@ async function main() {
   ];
 
   console.log('documentId=', documentId);
+  console.log('usingTokenType=', userAccessToken ? 'user_access_token' : 'tenant_access_token');
+
+  await appendProbeText(documentId, headers);
+  console.log('OK appendProbeText', JSON.stringify({ documentId, testText }));
+
+  const endpoint = `${baseURL}/docx/v1/documents/${documentId}/blocks/${documentId}/children`;
 
   for (const p of payloads) {
     try {

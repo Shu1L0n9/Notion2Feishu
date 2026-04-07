@@ -10,6 +10,9 @@
     "migrate-docs": "node src/migrate-docs.js",
     "export": "node src/export.js",
     "import-feishu": "node src/import-feishu.js",
+    "get_feishu_token": "node src/get_feishu_token.js",
+    "get-feishu-token": "node src/get_feishu_token.js",
+    "probe-docx": "node src/probe-docx.js",
     "dev": "node --watch src/index.js",
     "test": "jest"
   },
