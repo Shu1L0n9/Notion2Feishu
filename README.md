@@ -43,9 +43,11 @@
 
 1. 在应用设置中找到 **Redirect URL**，添加回调地址（例如 `http://localhost:91/callback`）
 2. 在开发者后台申请并发布需要的权限（用户身份权限！！！）：
-  - `wiki:wiki`、`wiki:node:create`
-  - `docx:document:write`
-  - `drive:media:write`
+  - `auth:user.id:read`
+  - `docs:document.media:upload`
+  - `docx:document`
+  - `docx:document:write_only`
+  - `wiki:wiki`
 3. 将 App ID / App Secret 和个人知识库（Wiki Space）的 ID，写入 `.env` 的对应字段，示例：
    
 ```bash

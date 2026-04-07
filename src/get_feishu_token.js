@@ -12,7 +12,7 @@ const appSecret = process.env.FEISHU_APP_SECRET || "";
 const redirectUri = process.env.REDIRECT_URI || "http://localhost:91/callback";
 const port = Number(process.env.PORT || 91);
 const oauthScope = process.env.FEISHU_OAUTH_SCOPE
-  || "wiki:wiki wiki:node:create docx:document:write_only docs:document.media:upload";
+  || "auth:user.id:read docs:document.media:upload docx:document docx:document:write_only wiki:wiki";
 
 function logAxiosError(response) {
   const data = response?.data;
