@@ -378,11 +378,11 @@ class FeishuDocClient {
         if (m) {
           const linkText = m[1] || '';
           const linkUrl = m[2] || '';
-          pushText(linkText, {
-            link: {
-              url: linkUrl,
-            },
-          });
+          if (/^https?:\/\//i.test(linkUrl)) {
+            pushText(linkText, { link: { url: linkUrl } });
+          } else {
+            pushText(`${linkText} (${linkUrl})`);
+          }
         } else {
           pushText(token);
         }
